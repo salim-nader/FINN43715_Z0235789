@@ -1,0 +1,74 @@
+
+--- Model 1: LP edge ~ vol + gas + |ETH return| (HAC, lag=5) ---
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:          lp_edge_daily   R-squared:                       0.199
+Model:                            OLS   Adj. R-squared:                  0.193
+Method:                 Least Squares   F-statistic:                     29.11
+Date:                Wed, 06 May 2026   Prob (F-statistic):           3.97e-17
+Time:                        07:49:11   Log-Likelihood:                 2680.9
+No. Observations:                 426   AIC:                            -5354.
+Df Residuals:                     422   BIC:                            -5338.
+Df Model:                           3                                         
+Covariance Type:                  HAC                                         
+===============================================================================
+                  coef    std err          z      P>|z|      [0.025      0.975]
+-------------------------------------------------------------------------------
+const           0.0001      0.000      0.719      0.472      -0.000       0.000
+eth_vol_30d     0.0002      0.000      0.913      0.361      -0.000       0.001
+gas_gwei     1.106e-05   2.06e-06      5.365      0.000    7.02e-06    1.51e-05
+abs_eth_ret     0.0053      0.001      6.129      0.000       0.004       0.007
+==============================================================================
+Omnibus:                      236.838   Durbin-Watson:                   1.100
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             1671.026
+Skew:                           2.341   Prob(JB):                         0.00
+Kurtosis:                      11.498   Cond. No.                         936.
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity and autocorrelation robust (HAC) using 5 lags and without small sample correction
+
+--- Model 2: AR(1) stETH peg deviation (HAC, lag=5) ---
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:          steth_peg_bps   R-squared:                       0.018
+Model:                            OLS   Adj. R-squared:                  0.016
+Method:                 Least Squares   F-statistic:                     8.290
+Date:                Wed, 06 May 2026   Prob (F-statistic):            0.00418
+Time:                        07:49:13   Log-Likelihood:                -1848.8
+No. Observations:                 454   AIC:                             3702.
+Df Residuals:                     452   BIC:                             3710.
+Df Model:                           1                                         
+Covariance Type:                  HAC                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const         -5.5214      0.736     -7.499      0.000      -6.964      -4.078
+peg_lag1       0.1327      0.046      2.879      0.004       0.042       0.223
+==============================================================================
+Omnibus:                       69.837   Durbin-Watson:                   2.002
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              381.149
+Skew:                           0.507   Prob(JB):                     1.72e-83
+Kurtosis:                       7.373   Cond. No.                         17.2
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity and autocorrelation robust (HAC) using 5 lags and without small sample correction
+
+Half-life of peg deviation: 0.34 days
+
+ADF test on peg: stat=-18.562, p-value=0.0000, lags=0
+
+--- Model 3a: Granger ETH vol -> |stETH peg deviation| ---
+  lag 1: F p-value = 0.5421
+  lag 2: F p-value = 0.1299
+  lag 3: F p-value = 0.1466
+  lag 4: F p-value = 0.2122
+  lag 5: F p-value = 0.1639
+
+--- Model 3b: Granger |stETH peg deviation| -> ETH vol ---
+  lag 1: F p-value = 0.0111
+  lag 2: F p-value = 0.0336
+  lag 3: F p-value = 0.0267
+  lag 4: F p-value = 0.0677
+  lag 5: F p-value = 0.1178
